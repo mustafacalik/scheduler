@@ -1,0 +1,193 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Conference Schedule</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+
+        <style>
+            /*************************
+            * GRID SCHEDULE LAYOUT
+            *************************/
+
+        .time-slot {
+            grid-column: times;
+        }
+
+        .track-slot {
+            display: none;
+            /* hidden on small screens and browsers without grid support */
+        }
+
+        @supports(display:grid) {
+            @media screen and (min-width:700px) {
+                .track-slot {
+                    display: block;
+                    padding: 10px 5px 5px;
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    background-color: rgba(255, 255, 255, .9);
+                }
+            }
+        }
+
+        /* Small-screen & fallback styles */
+        .session {
+            margin-bottom: 1em;
+        }
+
+        @supports(display:grid) {
+            @media screen and (min-width: 700px) {
+                .session {
+                    margin: 0;
+                }
+            }
+        }
+
+        /*************************
+        * VISUAL STYLES
+        * Design-y stuff ot particularly important to the demo
+        *************************/
+        body {
+            padding: 50px;
+            max-width: 1100px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .session {
+            padding: .5em;
+            border-radius: 2px;
+            font-size: 14px;
+            box-shadow:
+                    rgba(255, 255, 255, .6) 1px 1px 0,
+                    rgba(0, 0, 0, .3) 4px 4px 0;
+        }
+
+        .session-title,
+        .session-time,
+        .session-track,
+        .session-presenter {
+            display: block;
+        }
+
+        .session-title,
+        .time-slot {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        .session-title a {
+            color: #fff;
+            text-decoration-style: dotted;
+
+        &:hover {
+             font-style: italic;
+         }
+
+        &:focus {
+             outline: 2px dotted rgba(255, 255, 255, .8);
+         }
+        }
+
+        .track-slot,
+        .time-slot {
+            font-weight: bold;
+            font-size: .75em;
+        }
+
+        .track-1 {
+            background-color: #1259B2;
+            color: #fff;
+        }
+
+        .track-2 {
+            background-color: #687f00;
+            color: #fff;
+        }
+
+        .track-3 {
+            background-color: #544D69;
+            color: #fff;
+        }
+
+        .track-4 {
+            background-color: #c35500;
+            color: #fff;
+        }
+
+        .track-all {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ccc;
+            color: #000;
+            box-shadow: none;
+        }
+
+        .text {
+            max-width: 750px;
+            font-size: 18px;
+            margin: 0 auto 50px;
+        }
+
+        .meta {
+            color: #555;
+            font-style: italic;
+        }
+
+        .meta a {
+            color: #555;
+        }
+
+        hr {
+            margin: 40px 0;
+        }
+        </style>
+
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1> Conference Program </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+
+            <tr th:if="${schedule.presentationDtoList.isEmpty}">
+                <td colspan="2"> No Presentation Available </td>
+            </tr>
+
+            <div th:if="${!schedule.presentationDtoList.isEmpty}" th:style="${schedule.scheduleStyle}" aria-labelledby="schedule-heading">
+
+                <th:block th:each="room, stats : ${schedule.roomStyle}">
+                    <span class="track-slot" aria-hidden="true" th:style="${room[0]}" th:text="${room[1]}"></span>
+                </th:block>
+
+                <th:block th:each="time, stats : ${schedule.timeStyle}">
+                    <h2 class="time-slot" th:style="${time[0]}" th:text="${time[1]}"></h2>
+                </th:block>
+
+
+                <th:block th:each="presentation, stats : ${schedule.presentationDtoList}">
+                    <div  th:class="${presentation.htmlClass}" th:style="${presentation.htmlStyle}">
+                        <span class="session-title" th:text="${presentation.name}"></span>
+                        <span class="session-time" th:text="${presentation.time.formattedTime}"></span>
+                        <span class="session-track" th:text="${presentation.time.timeAsMinute} + ' minutes'"></span>
+                        <span class="session-presenter" th:text="${presentation.type}"></span>
+                    </div>
+                </th:block>
+
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-info" href="#" th:href="@{/}"> Show Presentation </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

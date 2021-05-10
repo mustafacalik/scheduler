@@ -1,0 +1,106 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Conference Schedule</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <style>
+        .errorblock {
+            color: #000;
+            background-color: #ffEEEE;
+            border: 3px solid #ff0000;
+            padding: 8px;
+            margin: 16px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1> Add Presentation </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+
+
+            <form action="#" class="form-horizontal" th:action="@{/add}" th:object="${presentationForm}" method="post">
+
+                <div class="errorblock" th:if="${#fields.hasErrors('*')}">
+                    <ul>
+                        <li th:each="error : ${#fields.errors('*')}" th:text="${error}">error</li>
+                    </ul>
+                </div>
+
+                <fieldset>
+					<span class="pull-right">
+                            <a class="btn btn-info" href="#" th:href="@{/schedule}"> Show Program </a>
+                            <a class="btn btn-info" href="#" th:href="@{/delete}"> Reset </a>
+					</span>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th> Name</th>
+                            <th> Time </th>
+                            <th> Lightning</th>
+                            <th> Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <input id="name" th:placeholder="Name" th:field="${presentationForm.name}"/>
+                            </td>
+                            <td>
+                                <input id="time" th:placeholder="Time" th:field="${presentationForm.time}"/>
+                            </td>
+
+                            <td>
+                                <input type="checkbox" name="lightning" th:checked="${presentationForm.lightning}" />
+                            </td>
+
+                            <td>
+                                <select th:field="${presentationForm.type}">
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="NETWORKING">NETWORKING</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <input type="submit" id="submitButton" class="btn btn-success" th:value="Add">
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </form>
+
+
+
+            <table class="table" >
+                <thead>
+                <tr>
+                    <th> Presentation Name </th>
+                    <th> Presentation Type </th>
+                    <th> Time as Minute</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${presentationList.isEmpty}">
+                    <td colspan="2"> No Presentation Available </td>
+                </tr>
+                <tr th:each="presentation : ${presentationList}">
+                    <td><span th:text="${presentation.name}">  </span></td>
+                    <td><span th:text="${presentation.type}">  </span></td>
+                    <td><span th:text="${presentation.time.timeAsMinute}">  </span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
