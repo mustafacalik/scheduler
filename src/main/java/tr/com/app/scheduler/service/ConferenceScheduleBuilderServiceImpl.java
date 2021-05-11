@@ -12,7 +12,9 @@ import tr.com.app.scheduler.controller.dto.ConferenceSchedule;
 import tr.com.app.scheduler.controller.dto.PresentationDto;
 import tr.com.app.scheduler.controller.dto.PresentationTime;
 import tr.com.app.scheduler.model.Presentation;
-import tr.com.app.scheduler.util.Utils;
+import tr.com.app.scheduler.util.StringHelper;
+import tr.com.app.scheduler.util.TimeHelper;
+import tr.com.app.scheduler.util.ViewHelper;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -41,10 +43,6 @@ public class ConferenceScheduleBuilderServiceImpl implements ConferenceScheduleB
 
     private int currentRoomNumber = 0;
     private Set<String> timeSet = new TreeSet<>();
-    private String scheduleStyle;
-    private List<String[]> roomStyle;
-    private List<String[]> timeStyle;
-
     private ParameterService parameterService;
     private ScheduleStrategy scheduleStrategy;
 
@@ -79,14 +77,14 @@ public class ConferenceScheduleBuilderServiceImpl implements ConferenceScheduleB
     public ConferenceScheduleBuilderService startEvent(){
         currentRoomNumber++;
         time = LocalTime.parse(eventStart);
-        timeSet.add(Utils.timeFormat(eventStart));
+        timeSet.add(TimeHelper.timeFormat(eventStart));
         return this;
     }
 
     @Override
     public ConferenceScheduleBuilderService endEvent(){
         time = LocalTime.parse(eventEnd);
-        timeSet.add(Utils.timeFormat(eventEnd));
+        timeSet.add(TimeHelper.timeFormat(eventEnd));
         return this;
     }
 
@@ -101,74 +99,35 @@ public class ConferenceScheduleBuilderServiceImpl implements ConferenceScheduleB
         time = LocalTime.parse(lunchStart);
         Presentation presentation = new Presentation();
         presentation.setType(PresentationType.LUNCH);
-        presentation.setTimeAsMinute(Utils.getMinuteBetweenStartTimeAndEndTime(lunchStart, lunchEnd));
+        presentation.setTimeAsMinute(TimeHelper.getMinuteBetweenStartTimeAndEndTime(lunchStart, lunchEnd));
         presentation.setName("LUNCH");
         presentationDtoList.add(createPresentationDto(presentation, lunchStart, lunchEnd));
-        timeSet.add(Utils.timeFormat(lunchStart));
+        timeSet.add(TimeHelper.timeFormat(lunchStart));
         return this;
     }
 
     @Override
     public ConferenceScheduleBuilderService endLunch(){
         time = LocalTime.parse(lunchEnd);
-        timeSet.add(Utils.timeFormat(lunchEnd));
+        timeSet.add(TimeHelper.timeFormat(lunchEnd));
         return this;
     }
 
     @Override
     public ConferenceScheduleBuilderService createEventsFromStartToLunch(){
-        presentationDtoList.addAll(createSubPresentationDtoList(getRemainingNormalPresentationList(), Utils.getMinuteBetweenStartTimeAndEndTime(eventStart, lunchStart)));
+        presentationDtoList.addAll(createSubPresentationDtoList(getRemainingNormalPresentationList(), TimeHelper.getMinuteBetweenStartTimeAndEndTime(eventStart, lunchStart)));
         return this;
     }
 
     @Override
     public ConferenceScheduleBuilderService createEventsFromLunchToNetwork() {
-        presentationDtoList.addAll(createSubPresentationDtoList(getRemainingNormalPresentationList(), Utils.getMinuteBetweenStartTimeAndEndTime(lunchEnd, networkEventStart)));
+        presentationDtoList.addAll(createSubPresentationDtoList(getRemainingNormalPresentationList(), TimeHelper.getMinuteBetweenStartTimeAndEndTime(lunchEnd, networkEventStart)));
         return this;
     }
 
     @Override
     public ConferenceScheduleBuilderService createEventsFromNetworkToEnd(){
-        presentationDtoList.addAll(createSubPresentationDtoList(getRemainingAllPresentationList(), Utils.getMinuteBetweenStartTimeAndEndTime(networkEventStart, networkEventEnd)));
-        return this;
-    }
-
-    @Override
-    public ConferenceScheduleBuilderService createScheduleStyle() {
-        StringBuilder style = new StringBuilder();
-        style.append("display:grid;grid-gap:1em;grid-template-rows:[tracks] auto ");
-        for (String timeStr : timeSet) {
-            style.append("[time-").append(timeStr).append("] 1fr ");
-        }
-        style.append(";");
-        style.append("grid-template-columns:[times] 4em ");
-        style.append("[track-1-start] 1fr ");
-        for (int i = 1; i < currentRoomNumber; i++) {
-            style.append("[track-").append(i).append("-end ");
-            style.append("track-").append(i + 1).append("-start] 1fr ");
-        }
-        style.append("[track-").append(currentRoomNumber).append("-end] 1fr; ");
-        scheduleStyle = style.toString();
-        return this;
-    }
-
-    @Override
-    public ConferenceScheduleBuilderService createRoomStyle(){
-        List<String[]> roomStyleList = new ArrayList<>();
-        for(int i = 1; i<= currentRoomNumber; i++){
-            roomStyleList.add(new String[]{Utils.stringAppend("grid-column: track-" , i, "; grid-row: tracks;"), Utils.stringAppend("Room " , i) });
-        }
-        roomStyle = roomStyleList;
-        return this;
-    }
-
-    @Override
-    public ConferenceScheduleBuilderService createTimeStyle(){
-        List<String[]> timeStyleList = new ArrayList<>();
-        for (String timeStr : timeSet) {
-            timeStyleList.add(new String[]{Utils.stringAppend("grid-row: time-", timeStr, ";"), Utils.stringAppend(timeStr.substring(0, 2), ":", timeStr.substring(2, 4))});
-        }
-        timeStyle = timeStyleList;
+        presentationDtoList.addAll(createSubPresentationDtoList(getRemainingAllPresentationList(), TimeHelper.getMinuteBetweenStartTimeAndEndTime(networkEventStart, networkEventEnd)));
         return this;
     }
 
@@ -176,9 +135,9 @@ public class ConferenceScheduleBuilderServiceImpl implements ConferenceScheduleB
     @Override
     public ConferenceSchedule build() {
         ConferenceSchedule conferenceSchedule = new ConferenceSchedule(presentationDtoList);
-        conferenceSchedule.setScheduleStyle(scheduleStyle);
-        conferenceSchedule.setRoomStyle(roomStyle);
-        conferenceSchedule.setTimeStyle(timeStyle);
+        conferenceSchedule.setScheduleStyle(ViewHelper.createScheduleStyle(timeSet, currentRoomNumber));
+        conferenceSchedule.setRoomStyle(ViewHelper.createRoomStyle(currentRoomNumber));
+        conferenceSchedule.setTimeStyle(ViewHelper.createTimeStyle(timeSet));
         return conferenceSchedule;
     }
 
@@ -198,7 +157,7 @@ public class ConferenceScheduleBuilderServiceImpl implements ConferenceScheduleB
             subPresentionDtoList.add(presentationDto);
 
             if(log.isDebugEnabled()){
-                logger.debug(Utils.stringAppend("Rooms ", currentRoomNumber, " ---> ", currentRoomNumber, presentationDto.getTime().getFormattedTime()));
+                logger.debug(StringHelper.stringAppend("Rooms ", currentRoomNumber, " ---> ", currentRoomNumber, presentationDto.getTime().getFormattedTime()));
             }
 
             totalMinutes-=presentation.getTimeAsMinute();
@@ -216,13 +175,13 @@ public class ConferenceScheduleBuilderServiceImpl implements ConferenceScheduleB
         presentationDto.setName(presentation.getName());
         presentationDto.setType(presentation.getType());
         PresentationTime presentationTime = new PresentationTime();
-        presentationTime.setTimeAsMinute(presentation.getTimeAsMinute().intValue());
-        presentationTime.setTimeStart(Utils.timeFormat(timeStart));
-        presentationTime.setTimeEnd(Utils.timeFormat(timeEnd));
+        presentationTime.setTimeAsMinute(presentation.getTimeAsMinute());
+        presentationTime.setTimeStart(TimeHelper.timeFormat(timeStart));
+        presentationTime.setTimeEnd(TimeHelper.timeFormat(timeEnd));
         presentationTime.setFormattedTime(timeStart + " " + timeEnd);
         presentationDto.setTime(presentationTime);
-        presentationDto.setHtmlClass(Utils.stringAppend("session session-", presentation.getId(), " track-", currentRoomNumber));
-        presentationDto.setHtmlStyle(Utils.stringAppend("grid-column: track-", currentRoomNumber,  "; grid-row: time-", presentationTime.getTimeStart(), " / time-", presentationTime.getTimeEnd()));
+        presentationDto.setHtmlClass(StringHelper.stringAppend("session session-", presentation.getId(), " track-", currentRoomNumber));
+        presentationDto.setHtmlStyle(StringHelper.stringAppend("grid-column: track-", currentRoomNumber,  "; grid-row: time-", presentationTime.getTimeStart(), " / time-", presentationTime.getTimeEnd()));
         return presentationDto;
     }
 

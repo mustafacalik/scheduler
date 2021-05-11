@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import tr.com.app.scheduler.controller.dto.ConferenceSchedule;
 
 @Service
-public class ScheduleServiceImpl implements tr.com.app.scheduler.service.ScheduleService {
+public class ScheduleServiceImpl implements ScheduleService {
 
     private PresentationService presentationService;
     private ConferenceScheduleBuilderService conferenceScheduleBuilderService;
@@ -30,6 +30,6 @@ public class ScheduleServiceImpl implements tr.com.app.scheduler.service.Schedul
                     .createEventsFromNetworkToEnd()
                     .endEvent();
         }
-        return conferenceScheduleBuilderService.createScheduleStyle().createRoomStyle().createTimeStyle().build();
+        return conferenceScheduleBuilderService.build();
     }
 }

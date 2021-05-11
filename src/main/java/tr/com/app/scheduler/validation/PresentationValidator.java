@@ -1,4 +1,4 @@
-package tr.com.app.scheduler.validation;
+﻿package tr.com.app.scheduler.validation;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -29,7 +29,7 @@ public class PresentationValidator implements Validator {
             errors.rejectValue(TIME_AS_MINUTE, "presentationForm.timeOrLightning.empty", null, null);
         }
 
-        if (PresentationType.NETWORKING == presentationForm.getType() && Boolean.FALSE.equals(presentationForm.getLightning()) && presentationForm.getTime() > 60) {
+        if (PresentationType.NETWORKING == presentationForm.getType() && Boolean.FALSE.equals(presentationForm.getLightning()) && presentationForm.getTime() != null && presentationForm.getTime() > 60) {
             errors.rejectValue(TIME_AS_MINUTE, "presentationForm.timeAsMinute.60", null, null);
         }
 

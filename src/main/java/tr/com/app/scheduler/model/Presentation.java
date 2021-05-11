@@ -17,7 +17,7 @@ public class Presentation {
     @GeneratedValue(generator = "id-generator")
     @GenericGenerator(
             name = "id-generator",
-            strategy = "tr.com.app.cpa.util.IdGenerator")
+            strategy = "tr.com.app.scheduler.util.IdGenerator")
     private Long id;
 
     private String name;

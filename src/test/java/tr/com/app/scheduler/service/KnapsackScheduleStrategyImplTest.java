@@ -1,18 +1,22 @@
 package tr.com.app.scheduler.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tr.com.app.scheduler.model.Presentation;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class KnapsackScheduleStrategyImplTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
+class KnapsackScheduleStrategyImplTest {
 
     private KnapsackScheduleStrategyImpl knapsackScheduleStrategy = new KnapsackScheduleStrategyImpl();
 
     @Test
-    public void getSubListByMaximumTotalWeight_WhenGivenList_ReturnSubListAccordingToMaxTotalWeightParameter(){
+    void getSubListByMaximumTotalWeight_WhenGivenList_ReturnSubListAccordingToMaxTotalWeightParameter(){
         Presentation presentation1 = new Presentation();
         presentation1.setTimeAsMinute(10);
 
@@ -24,8 +28,8 @@ public class KnapsackScheduleStrategyImplTest {
 
         List<Presentation> subPresentationList = knapsackScheduleStrategy.getSubListByMaximumTotalWeight(Arrays.asList(presentation1, presentation2, presentation3), 15);
 
-        Assertions.assertEquals(1, subPresentationList.size());
-        Assertions.assertEquals(10, subPresentationList.get(0).getTimeAsMinute());
+        assertEquals(1, subPresentationList.size());
+        assertEquals(10, subPresentationList.get(0).getTimeAsMinute());
     }
 
 }

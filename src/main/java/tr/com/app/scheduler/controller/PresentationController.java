@@ -38,7 +38,7 @@ public class PresentationController {
     @GetMapping("/schedule")
     public String showProgram(Model model) {
         model.addAttribute("schedule",scheduleService.createSchedule());
-        return "schedule";
+        return "schedulePage";
     }
 
 
@@ -54,8 +54,8 @@ public class PresentationController {
         return "redirect:/";
     }
 
-    @GetMapping("/delete")
-    public String delete() {
+    @GetMapping("/reset")
+    public String reset() {
         presentationService.deletePresentation();
         return "redirect:/";
     }

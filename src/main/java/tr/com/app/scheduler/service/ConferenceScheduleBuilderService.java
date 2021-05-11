@@ -26,11 +26,5 @@ public interface ConferenceScheduleBuilderService {
 
     ConferenceScheduleBuilderService createEventsFromNetworkToEnd();
 
-    ConferenceScheduleBuilderService createScheduleStyle();
-
-    ConferenceScheduleBuilderService createRoomStyle();
-
-    ConferenceScheduleBuilderService createTimeStyle();
-
     ConferenceSchedule build();
 }
