@@ -27,8 +27,8 @@ This is a we project which is developed with Spring Boot. It takes presentation 
 
 ### With maven command line
 ```
-git clone https://github.com/mustafacalik/conference-scheduler.git
-cd conference-scheduler
+git clone https://github.com/mustafacalik/scheduler.git
+cd scheduler
 ./mvnw spring-boot:run
 ```
 
