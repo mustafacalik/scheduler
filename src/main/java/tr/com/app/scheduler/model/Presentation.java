@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
 
+/**
+ * The type Presentation.
+ */
 @Entity
 @Table(name = "PRESENTATION")
 public class Presentation {
@@ -24,9 +27,20 @@ public class Presentation {
     private Integer timeAsMinute;
     private PresentationType type;
 
+    /**
+     * Instantiates a new Presentation.
+     */
     public Presentation() {
     }
 
+    /**
+     * Instantiates a new Presentation.
+     *
+     * @param id           the id
+     * @param name         the name
+     * @param timeAsMinute the time as minute
+     * @param type         the type
+     */
     public Presentation(Long id, String name, Integer timeAsMinute, PresentationType type) {
         this.id = id;
         this.name = name;
@@ -34,34 +48,74 @@ public class Presentation {
         this.type = type;
     }
 
+    /**
+     * Gets ıd.
+     *
+     * @return the ıd
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Sets ıd.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets time as minute.
+     *
+     * @return the time as minute
+     */
     public Integer getTimeAsMinute() {
         return timeAsMinute;
     }
 
+    /**
+     * Sets time as minute.
+     *
+     * @param timeAsMinute the time as minute
+     */
     public void setTimeAsMinute(Integer timeAsMinute) {
         this.timeAsMinute = timeAsMinute;
     }
 
+    /**
+     * Gets type.
+     *
+     * @return the type
+     */
     public PresentationType getType() {
         return type;
     }
 
+    /**
+     * Sets type.
+     *
+     * @param type the type
+     */
     public void setType(PresentationType type) {
         this.type = type;
     }

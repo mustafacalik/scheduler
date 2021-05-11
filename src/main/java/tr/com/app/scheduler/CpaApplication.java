@@ -9,20 +9,38 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+/**
+ * The type Cpa application.
+ */
 @EnableCaching
 @SpringBootApplication
 public class CpaApplication {
 
-	public static void main(String[] args) {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
 		SpringApplication.run(CpaApplication.class, args);
 	}
 
-	@Bean
+    /**
+     * Model mapper model mapper.
+     *
+     * @return the model mapper
+     */
+    @Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
 
-	@Bean
+    /**
+     * Message source message source.
+     *
+     * @return the message source
+     */
+    @Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:messages");
@@ -31,7 +49,12 @@ public class CpaApplication {
 		return messageSource;
 	}
 
-	@Bean
+    /**
+     * Gets validator.
+     *
+     * @return the validator
+     */
+    @Bean
 	public LocalValidatorFactoryBean getValidator() {
 		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
 		bean.setValidationMessageSource(messageSource());

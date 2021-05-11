@@ -4,11 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The type View helper.
+ */
 public final class ViewHelper {
 
     private ViewHelper(){
     }
 
+    /**
+     * Create schedule style string.
+     *
+     * @param timeSet           the time set
+     * @param currentRoomNumber the current room number
+     * @return the string
+     */
     public static String createScheduleStyle(Set<String> timeSet, int currentRoomNumber) {
         StringBuilder style = new StringBuilder();
         style.append("display:grid;grid-gap:1em;grid-template-rows:[tracks] auto ");
@@ -27,6 +37,12 @@ public final class ViewHelper {
     }
 
 
+    /**
+     * Create room style list.
+     *
+     * @param currentRoomNumber the current room number
+     * @return the list
+     */
     public static List<String[]> createRoomStyle(int currentRoomNumber){
         List<String[]> roomStyleList = new ArrayList<>();
         for(int i = 1; i<= currentRoomNumber; i++){
@@ -36,6 +52,12 @@ public final class ViewHelper {
     }
 
 
+    /**
+     * Create time style list.
+     *
+     * @param timeSet the time set
+     * @return the list
+     */
     public static List<String[]> createTimeStyle(Set<String> timeSet){
         List<String[]> timeStyleList = new ArrayList<>();
         for (String timeStr : timeSet) {

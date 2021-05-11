@@ -4,12 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tr.com.app.scheduler.controller.dto.ConferenceSchedule;
 
+/**
+ * The type Schedule service.
+ */
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
     private PresentationService presentationService;
     private ConferenceScheduleBuilderService conferenceScheduleBuilderService;
 
+    /**
+     * Instantiates a new Schedule service.
+     *
+     * @param presentationService              the presentation service
+     * @param conferenceScheduleBuilderService the conference schedule builder service
+     */
     @Autowired
     public ScheduleServiceImpl(PresentationService presentationService, ConferenceScheduleBuilderService conferenceScheduleBuilderService) {
         this.presentationService = presentationService;

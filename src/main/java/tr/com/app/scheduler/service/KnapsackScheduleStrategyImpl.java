@@ -6,6 +6,9 @@ import tr.com.app.scheduler.model.Presentation;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The type Knapsack schedule strategy.
+ */
 @Component
 public class KnapsackScheduleStrategyImpl implements tr.com.app.scheduler.service.ScheduleStrategy {
 

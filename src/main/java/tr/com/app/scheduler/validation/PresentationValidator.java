@@ -1,4 +1,4 @@
-﻿package tr.com.app.scheduler.validation;
+package tr.com.app.scheduler.validation;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -6,6 +6,9 @@ import org.springframework.validation.Validator;
 import tr.com.app.scheduler.controller.PresentationType;
 import tr.com.app.scheduler.controller.dto.PresentationForm;
 
+/**
+ * The type Presentation validator.
+ */
 @Component
 public class PresentationValidator implements Validator {
 

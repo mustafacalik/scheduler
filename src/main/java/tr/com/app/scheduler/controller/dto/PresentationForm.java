@@ -6,6 +6,9 @@ import tr.com.app.scheduler.controller.PresentationType;
 
 import javax.validation.constraints.*;
 
+/**
+ * The type Presentation form.
+ */
 @Getter
 @Setter
 public class PresentationForm {

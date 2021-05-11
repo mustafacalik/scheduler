@@ -21,6 +21,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * The type Conference schedule builder service.
+ */
 @Slf4j
 @RequestScope
 @Service
@@ -46,6 +49,12 @@ public class ConferenceScheduleBuilderServiceImpl implements ConferenceScheduleB
     private ParameterService parameterService;
     private ScheduleStrategy scheduleStrategy;
 
+    /**
+     * Instantiates a new Conference schedule builder service.
+     *
+     * @param parameterService the parameter service
+     * @param scheduleStrategy the schedule strategy
+     */
     @Autowired
     public ConferenceScheduleBuilderServiceImpl(ParameterService parameterService, ScheduleStrategy scheduleStrategy) {
         this.parameterService = parameterService;

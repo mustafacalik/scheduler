@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import tr.com.app.scheduler.controller.PresentationType;
 
+/**
+ * The type Presentation dto.
+ */
 @Getter
 @Setter
 public class PresentationDto {

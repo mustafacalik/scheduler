@@ -13,12 +13,21 @@ import tr.com.app.scheduler.repository.PresentationRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Presentation service.
+ */
 @Service
 public class PresentationServiceImpl implements PresentationService{
 
     private ModelMapper modelMapper;
     private PresentationRepository presentationRepository;
 
+    /**
+     * Instantiates a new Presentation service.
+     *
+     * @param modelMapper            the model mapper
+     * @param presentationRepository the presentation repository
+     */
     @Autowired
     public PresentationServiceImpl(ModelMapper modelMapper, PresentationRepository presentationRepository) {
         this.modelMapper = modelMapper;

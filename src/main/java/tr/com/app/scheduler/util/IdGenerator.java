@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
-import java.util.Random;
 
+/**
+ * The type Id generator.
+ */
 @Component
 public class IdGenerator implements IdentifierGenerator {
 

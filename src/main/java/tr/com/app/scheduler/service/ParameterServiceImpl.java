@@ -6,11 +6,19 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import tr.com.app.scheduler.controller.ParameterType;
 
+/**
+ * The type Parameter service.
+ */
 @Service
 public class ParameterServiceImpl implements tr.com.app.scheduler.service.ParameterService {
 
     private Environment environment;
 
+    /**
+     * Instantiates a new Parameter service.
+     *
+     * @param environment the environment
+     */
     @Autowired
     public ParameterServiceImpl(Environment environment) {
         this.environment = environment;

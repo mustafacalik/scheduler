@@ -13,6 +13,9 @@ import tr.com.app.scheduler.validation.PresentationValidator;
 
 import javax.validation.Valid;
 
+/**
+ * The type Presentation controller.
+ */
 @Controller
 public class PresentationController {
 
@@ -20,6 +23,13 @@ public class PresentationController {
     private ScheduleService scheduleService;
     private PresentationValidator presentationValidator;
 
+    /**
+     * Instantiates a new Presentation controller.
+     *
+     * @param presentationService   the presentation service
+     * @param scheduleService       the schedule service
+     * @param presentationValidator the presentation validator
+     */
     @Autowired
     public PresentationController(PresentationService presentationService, ScheduleService scheduleService, PresentationValidator presentationValidator) {
         this.presentationService = presentationService;
@@ -27,6 +37,12 @@ public class PresentationController {
         this.presentationValidator = presentationValidator;
     }
 
+    /**
+     * Main string.
+     *
+     * @param model the model
+     * @return the string
+     */
     @GetMapping("/")
     public String main(Model model) {
         model.addAttribute("presentationList", presentationService.getAllPresentationDto());
@@ -35,6 +51,12 @@ public class PresentationController {
     }
 
 
+    /**
+     * Show program string.
+     *
+     * @param model the model
+     * @return the string
+     */
     @GetMapping("/schedule")
     public String showProgram(Model model) {
         model.addAttribute("schedule",scheduleService.createSchedule());
@@ -42,6 +64,14 @@ public class PresentationController {
     }
 
 
+    /**
+     * Add string.
+     *
+     * @param presentationForm the presentation form
+     * @param errors           the errors
+     * @param model            the model
+     * @return the string
+     */
     @PostMapping("/add")
     public String add(@Valid PresentationForm presentationForm, BindingResult errors, Model model) {
         presentationValidator.validate(presentationForm, errors);
@@ -54,6 +84,11 @@ public class PresentationController {
         return "redirect:/";
     }
 
+    /**
+     * Reset string.
+     *
+     * @return the string
+     */
     @GetMapping("/reset")
     public String reset() {
         presentationService.deletePresentation();
